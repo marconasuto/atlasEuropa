@@ -20,6 +20,7 @@
 │
 ├── reports                              <- Reports and presentations
 │   └── presentation.pdf         <- Non-technical presentation
+│   └── presentation.key         <- Slide-deck Non-technical presentation
 │   └── assets                         <- Plots
 │   └── logs                             <- Tensorboard logs
 │   └── saved_models             <- Saved models
