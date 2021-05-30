@@ -5,6 +5,8 @@
 
 *Module 4 project for FlatIron School Data Science course*
 
+Blog: https://atlaseuropa.marconasuto.com/
+
 ## Project structure
 ```
 ├── LICENSE
