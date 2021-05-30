@@ -6,6 +6,7 @@
 *Module 4 project for FlatIron School Data Science course*
 
 ## Project structure
+```
 ├── LICENSE
 ├── README.md                                                <- The project layout (this file)
 ├── data
@@ -25,7 +26,7 @@
 │   └── maps                           <- Folium map in HTML
 
 └── requirements.txt                <- The requirements file for reproducing the analysis environment
-
+```
 
 ## Project description
 Remote sensing data offer a low cost, scalable, tool to analyse geophysical and geospatial phenomena, with high level of accuracy, coherence, and richness in terms of diversity of data, in particular if we consider, i.e.,  multi or hyperspectral imaging, as well as LiDAR and SAR, which translates in significant business opportunities. The fields of application goes from agriculture, to fisheries production, forestry, resource management, risk and anomaly prediction, disasters management, urban planning, mobility and so on. 
@@ -36,9 +37,14 @@ Within this context, as part of my educational path at Flatiron School - Data Sc
 
 The project structure was developed using the well-known OSEMiN methodology. The business understanding section summarises the importance and the economical opportunities related to land cover/land use classification. Although it is a proof of concept, what I wanted to achieve with this project was being able to answer to the following: 1) Can deep learning help updating an atlas of LULC? 2) Can this project potentially help tracking changes in LULC? 3) Is it possible to train an accurate deep learning model for LULC with a small-to-medium sized dataset?
 
+![alt text](reports/assets/first_and_sixth_image.png)
+FIG: EURODATASET VISUALIZED
+
 ## Business understanding
 ### Remote sensing data and land use/land cover (LULC): a brief introduction
 In order to understand properly the use of satellite images, it is necessary to explain the basic principles of remote sensing, which can briefly be summarized as follows. Earth's surface is illuminated by a wide spectrum of electromagnetic radiation coming from the sun. All objects on Earth's surface (targets) are interfering with radiation as targets reflect, transmit, or absorb the incoming electromagnetic waves. The process that takes place depends on the physical and chemical structure of the target and on the wavelength involved. The reflected part of the spectrum is the most important for remote-sensing applications dealing with land. Over the different wavelengths, targets reflect in a specific, and in some cases unique, way. This characteristic spectral response of objects enables their identification by means of remote sensing. Comparing the response patterns of different features of Earth's surface in different spectral ranges makes the different objects distinguishable. I.e. chlorophyll strongly absorbs radiation in the red and blue wavelengths but reflects green wavelengths. Therefore, leaves appear green in the summer, when their chlorophyll content is at its maximum. In autumn, there is less chlorophyll in the leaves, so there is less absorption and proportionally more reflection of the red wavelengths, making the leaves appear red or yellow. The internal structure of healthy leaves acts as a strong reflector of near-infrared wavelengths. The near-IR/red ratio is the basis for many vegetation indices, used for vegetation monitoring. The specific reflection properties of each plant enable the identification and differentiation of different plants. Water absorbs the longer wavelengths in the visible range and the near infrared radiation more than shorter visible wavelengths. Thus, water typically looks blue or blue-green due to stronger reflectance at these shorter wavelengths, and darker if viewed at red or near infrared wavelengths. If there is suspended sediment present in the upper layers of the water body, then this will allow a better reflectivity and brighter appearance of the water. The reflection patterns of soils exhibit stronger spectral features. The reflection depends mainly on the mineral composition, the grain size, the water, and the organic content of the soil. The drier, purer soils have a lower emission in this range of the spectrum.
+![alt text](reports/assets/second_image.png)
+
 ### Copernicus data and business opportunities: a brief overview
 Land-cover and land-use information are required for many different kinds of spatial planning, from urban planning at a local level up to regional development. They play an important role in agricultural policy making. Moreover, land-cover data are used as basic information for sustainable management of natural resources; they are increasingly needed for the assessment of impacts of economic development on the environment. Hence, they are fundamental for guiding decision making at various geographical levels. Various tools and methods for collecting land-cover and land-use information have been developed to satisfy the user requirements and the information demand. The European Union and the European Space Agency (ESA) launched Copernicus program to boost Earth observation data analysis adopting an open-data policy. Under this program, ESA operates a series of satellites known as Sentinels. The range of applications of Sentinels data is wide as it goes from food, agriculture and fisheries, to biodiversity and enviornmental protection, climate, water and energy, territorial management and urban planning, civil protection, transports, civil infrastructures and safety, and finally public health, cultural heritage, tourism and leisure. The purpose of this very brief buisness opportunities review is not to do an in depth analysis of all sectors, rather it has to been seen as a framework to highlight and understand the reasons behind choosing this topic for my project. I.e. let's take the case of agriculture, fisheries and aquaculture. They are some of the pillars of the economic structure of the European Union. EU is the fifht largest producer in terms of fisheries and aquaculture production. 85% of land cover in European Union is constituted by agricultural land and forests. Resource managment is critical to sustainability, and ultimately, well being of countries. Tracking this vast and diverse region is key but challenging. To take decisions it is essential to have low cost, accessible, scalable, accurate, diverse and updated levels of information.
 
@@ -67,17 +73,22 @@ A solution investigated by Senecal et. al should tackle specifically this issue:
 The loss function considered was categorical crossentropy, which is common and appropriate for multi-class classification. The target metric is categorical accuracy, as the dataset is only slighlty unbalanced. 
 
 ## Dataset
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "COUNT PLOT OF NUMBER OF IMAGES PER LABEL")
+![alt text](reports/assets/third_image.png)
 FIG : COUNT PLOT OF NUMBER OF IMAGES PER LABEL
-
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "CO-OCCURENCY MATRIX FOR ALL LABELS")
-FIG : CO-OCCURENCY MATRIX FOR ALL LABELS
 
 The dataset is called EuroSat, based on Sentinel-2 satellite images covering 13 spectral bands and consisting out of 10 classes with in total 27,000 labeled and geo-referenced images from 34 countries in Europe, as shown in the map below. The dataset is slighltly unmbalanced, with the label 'pasture'as the one with fewer samples. It cannot be considered as a big dataset, rather a small-medium sized one. This poses challenges in terms of achievable performances using CNNs, especially considering that transfer learning using ImageNet weights is not directly applicable to multispectral images. Whereas to load the jpg files I used Keras ImageDataGenerator along with flow_from_dataframe, for the tif images, I first created a dataset of numpy arrays, pickled it, and then after loading it, I used ImageDataGenerator with .flow method. In the future, I want to use lower level Tensorflow to handle tif images and jpg images in a more efficient way. 
 
 Preprocessing consisted in rescaling and data augmentation for jpg images, whereas I filtered out those bands used for atmospheric studies only, then I normalized all the remaining bands (10), and finally I applied some data augmentation to reduce overfitting and help generalization. When using pre-trained models and jpg images, I didn't apply rescaling as I adopted, as suggested by Keras official page, ResNet preprocess_input method. 
 
 Sentinel-2A is one satellite in the two-satellite constellation of the identical land monitoring satellites Sentinel-2A and Sentinel-2B. The satellites were successfully launched in June 2015 (Sentinel2A) and March 2017 (Sentinel-2B). Both sun-synchronous satellites capture the global Earth’s land surface with a Multispectral Imager (MSI) covering the 13 different spectral bands listed in Table I. The three bands B01, B09 and B10 are intended to be used for the correction of atmospheric effects (e.g., aerosols, cirrus or water vapor). The remaining bands are primarily intended to identify and monitor land use and land cover classes. In addition to mainland, large islands as well as inland and coastal waters are covered by these two satellites. The two-satellite constellation generates a coverage of almost the entire Earth’s land surface about every five days, i.e. the satellites capture each point in the covered area about every five days. This short repeat cycle as well as the future availability of the Sentinel satellites allows a continuous monitoring of the Earth’s land surface for about the next 20 - 30 years. Most importantly, the data is openly and freely accessible and can be used for any application (commercial or non-commercial use). The large volume of satellite data in combination with powerful machine learning methods will influence future research.
+
+![alt text](reports/assets/fourth_image.png)
+
+![alt text](reports/assets/fifth_image.png)
+FIG : COUNT PLOT OF NUMBER OF IMAGES PER LABEL
+
+![alt text](reports/assets/first_and_sixth_image.png)
+FIG : COUNT PLOT OF NUMBER OF IMAGES PER LABEL
 
 ## Methods
 I approached to this project with the idea of maximising learnings on deep learning, tensorflow, and remote sensing. Trades off were necessary due to time constraints and priorities, I used Keras API ImageDataGenerator, to feed the training. Eager execution was active, as this project is not meant to go into production. No GPUs or TPUs were used for training or prediction. I started  experiments with jpg images first, and then moved to use SpectrumNet for multispectral images.
@@ -88,8 +99,12 @@ Due to computational and time constraints, I downsampled the original dataset to
 
 The hyperparameters tuned were: number of epochs: 4; number of layers; learning rate: 10ˆ-4 with ReduceLROnPlateau callback to 10ˆ-6; L2 regularization layer: l2 regularization factor 0.0001 applied to all layers (where applicable) of ResNet base model.
 
+![alt text](reports/assets/fifth_image.png)
 
 ## Results
+[![](reports/assets/final_image.png)](https://marconasuto.github.io/maps/atlaseuropa/classifier/)
+FIG :  Map showing a sample of 2000 tiles with colored bounding boxes: red if misclassified, yellow if unassigned, green if correctly classified
+
 1. Can deep learning help updating an atlas of LULC?
 The potential of automated mapping can be summarised by the accuracy of more than 95% that our model reached. This means that, hypotetically, scaling it up to the entire European region, we could map each tile land use and land cover, obtaining an atlas that could be updated throughout time. This is significant as we are able to have a ground truth of the status and the evolution of a region, and do analysis on, i.e., the effectiveness of certain policies or how to sustainable use resources. At the same time, it is interesting to see how the model confuses similar patterns. For example, it misclassify rivers as highways and viceversa. Or industrial vs residential areas, or sea lakes vs large rivers, forests vs herbaceous areas. This would suggest specific strategies to tackle similar objects, such as specialised classifiers.
 
