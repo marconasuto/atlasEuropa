@@ -1,0 +1,2 @@
+channels,image_size,num_images_train,num_images_val,num_images_test,epochs,batch_size,loss_type,opt_type,learning_rate,momentum,regularization,horizontal_flip,vertical_flip,rotation_range,shear_range
+3,64,17010,7290,2700,3,32,categorical_crossentropy,Adam,0.0001,0.9,True,True,True,90,45
